@@ -12,7 +12,7 @@ WORKDIR /cwb
 
 RUN ./install-scripts/cwb-install-ubuntu
 
-# TODO: hardcoded version is not optimal
-ENV PATH="/usr/local/cwb-3.4.12/bin/:${PATH}"
+RUN mv /usr/local/cwb-* /usr/local/cwb
+ENV PATH="/usr/local/cwb/bin/:${PATH}"
 
 VOLUME /var/cwb

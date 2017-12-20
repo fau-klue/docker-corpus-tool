@@ -15,11 +15,11 @@ docker build -t cwb .
 To start the Corpus Workbench container:
 
 ```
-docker run cwb bash
+docker run -ti cwb bash
 ```
 
 To mount corpus data into the container:
 
 ```
-docker run cwb -v /mycorpusdata:/var/cwb bash
+docker run -ti cwb -v /mycorpusdata:/var/cwb bash
 ```

@@ -17,12 +17,17 @@ RUN mv /usr/local/cwb-* /usr/local/cwb
 # Actual Image without build dependencies
 FROM ubuntu:zesty
 
+# Add new binaries to PATH
+ENV PATH="/usr/local/cwb/bin/:${PATH}"
+
+# Install dependency libraries
 RUN apt-get update && \
     apt-get install -y bison flex libglib2.0-0 libreadline6 && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/cwb /usr/local/cwb
-ENV PATH="/usr/local/cwb/bin/:${PATH}"
 
+# To mount corpus data
 VOLUME /var/cwb
+
 CMD ["bash"]

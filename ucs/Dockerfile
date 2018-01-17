@@ -21,4 +21,5 @@ RUN cpanm Pod::Perldoc && \
 RUN perl /ucs/System/Install.perl -f
 ENV PATH="/ucs/System/bin/:${PATH}"
 
+VOLUME /data
 CMD ["bash"]

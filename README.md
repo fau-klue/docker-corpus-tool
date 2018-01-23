@@ -1,15 +1,13 @@
 # Corpus Tools Docker Image
 
-Docker Images for the IMS Open Corpus Workbench and UCS toolkit.
+Docker Images for the IMS Open Corpus Workbench and UCS Toolkit.
 
 ## CWB
-
 The IMS Open Corpus Workbench (CWB) is a collection of open-source tools for managing and querying large text corpora.
 
 http://cwb.sourceforge.net/
 
 ## UCS
-
 The UCS toolkit is a collection of libraries and scripts for the statistical analysis of cooccurrence data.
 
 http://www.collocations.de/software.html

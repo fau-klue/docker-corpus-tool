@@ -41,16 +41,17 @@ RUN apt-get update && \
     a2ps \
     bison \
     cpanminus \
+    make \
     flex \
     libglib2.0-0 \
     perl-doc \
     r-base-core \
     readline-common \
+    libterm-readkey-perl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies for ucs
-RUN cpanm Term::ReadKey \
-    Statistics::R
+RUN cpanm --force Statistics::R
 
 # Add new binaries to PATH
 COPY --from=builder /usr/local/cwb /usr/local/cwb

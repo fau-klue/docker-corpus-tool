@@ -1,4 +1,5 @@
 FROM ubuntu:xenial as builder
+ARG version="3.4.13"
 
 # Install cwb dependencies
 RUN apt-get update && \
@@ -22,13 +23,22 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Download latest sources
-RUN svn co http://svn.code.sf.net/p/cwb/code/cwb/trunk /cwb
+RUN svn co svn://svn.code.sf.net/p/cwb/code/cwb/trunk /cwb
 RUN svn co svn://svn.code.sf.net/p/multiword/code/software/UCS/trunk /ucs
+RUN svn co svn://svn.code.sf.net/p/cwb/code/perl/trunk cwb-perl
 
 # Run install script and Move to unified location
 WORKDIR /cwb
 RUN ./install-scripts/cwb-install-ubuntu
-RUN mv /usr/local/cwb-* /usr/local/cwb
+ENV PATH="/usr/local/ucs/System/bin/:/usr/local/cwb-${version}/bin/:${PATH}"
+
+# Building the cwb-perl bridges and packing them
+RUN cd /cwb-perl/CWB && perl Makefile.PL && make && make install DESTDIR=/binaries
+RUN cd /cwb-perl/CWB-CL && perl Makefile.PL && make && make install DESTDIR=/binaries
+RUN cd /cwb-perl/CWB-CQI && perl Makefile.PL && make && make install DESTDIR=/binaries
+RUN cd /cwb-perl/CWB-Web && perl Makefile.PL && make && make install DESTDIR=/binaries
+# This make copying the binaries easier
+RUN tar cvf /binaries.tar /binaries/
 
 ###########################################
 # Actual Image without build dependencies #
@@ -54,12 +64,15 @@ RUN apt-get update && \
 RUN cpanm --force Statistics::R
 
 # Add new binaries to PATH
-COPY --from=builder /usr/local/cwb /usr/local/cwb
+COPY --from=builder /usr/local/cwb-* /usr/local/
 COPY --from=builder /ucs /usr/local/ucs
+COPY --from=builder /binaries.tar /
 
+# Unpack the binaries to /usr
+RUN tar xvf /binaries.tar --strip-components=1 && rm -f /binaries.tar
 # Install ucs and add new binaries to PATH
 RUN perl /usr/local/ucs/System/Install.perl -f
-ENV PATH="/usr/local/ucs/System/bin/:/usr/local/cwb/bin/:${PATH}"
+ENV PATH="/usr/local/ucs/System/bin/:/usr/local/cwb-${version}/bin/:${PATH}"
 
 # To mount data storage
 VOLUME /data

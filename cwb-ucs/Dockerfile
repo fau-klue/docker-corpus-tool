@@ -69,7 +69,10 @@ COPY --from=builder /ucs /usr/local/ucs
 COPY --from=builder /binaries.tar /
 
 # Unpack the binaries to /usr
-RUN tar xvf /binaries.tar --strip-components=1 && rm -f /binaries.tar
+RUN tar xvf /binaries.tar --strip-components=1 && \
+    rm -f /binaries.tar && \
+    ln -s /usr/local/share/perl/$(perl -e 'print substr($^V, 1)')/CWB /usr/local/lib/site_perl
+
 # Install ucs and add new binaries to PATH
 RUN perl /usr/local/ucs/System/Install.perl -f
 ENV PATH="/usr/local/ucs/System/bin/:/usr/local/cwb-${version}/bin/:${PATH}"

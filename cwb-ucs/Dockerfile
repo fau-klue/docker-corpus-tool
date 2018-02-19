@@ -44,6 +44,7 @@ RUN tar cvf /binaries.tar /binaries/
 # Actual Image without build dependencies #
 ###########################################
 FROM ubuntu:xenial
+ARG version="3.4.13"
 
 # Install dependency libraries
 RUN apt-get update && \

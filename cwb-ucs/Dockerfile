@@ -1,5 +1,5 @@
 FROM ubuntu:xenial as builder
-ARG version="3.4.13"
+ARG version="3.4.14"
 
 # Install cwb dependencies
 RUN apt-get update && \
@@ -44,7 +44,7 @@ RUN tar cvf /binaries.tar /binaries/
 # Actual Image without build dependencies #
 ###########################################
 FROM ubuntu:xenial
-ARG version="3.4.13"
+ARG version="3.4.14"
 
 # Install dependency libraries
 RUN apt-get update && \

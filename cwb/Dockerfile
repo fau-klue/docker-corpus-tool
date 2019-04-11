@@ -26,7 +26,7 @@ RUN svn co http://svn.code.sf.net/p/cwb/code/cwb/trunk /cwb
 
 # Run install script and Move to unified location
 WORKDIR /cwb
-RUN ./install-scripts/cwb-install-ubuntu
+RUN ./install-scripts/install-linux
 RUN mv /usr/local/cwb-* /usr/local/cwb
 
 ###########################################

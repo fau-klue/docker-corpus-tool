@@ -15,20 +15,25 @@ http://www.collocations.de/software.html
 # Building the Images
 
 How to build the images:
+
 ```
 # Corpus Workbench
+# make cwb
 docker build -t cwb -f cwb/Dockerfile .
 
 # UCS toolkit
+# make ucs
 docker build -t ucs -f ucs/Dockerfile .
 
 # Corpus Workbench and CUCS toolkit
+# make cwb-ucs
 docker build -t cwb-ucs -f cwb-ucs/Dockerfile .
 ```
 
 # Using the Images
 
 To run the containers:
+
 ```
 docker run -ti cwb
 docker run -ti ucs
@@ -36,6 +41,7 @@ docker run -ti cwb-ucs
 ```
 
 Mounting a volume for persistent storage:
+
 ```
 docker run -ti cwb -v /home/yourname/data:/data
 ```

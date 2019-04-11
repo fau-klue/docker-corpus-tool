@@ -1,8 +1,9 @@
-FROM ubuntu:xenial as builder
+FROM ubuntu:bionic as builder
 
 # Install cwb dependencies
 RUN apt-get update && \
-    apt-get install -y \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends -y \
     apt-utils \
     autoconf \
     bison \
@@ -14,8 +15,8 @@ RUN apt-get update && \
     libncurses5 \
     libncurses5-dev \
     libpcre3-dev \
-    libreadline6 \
-    libreadline6-dev \
+    libreadline7 \
+    libreadline-dev \
     make \
     pkg-config \
     subversion \
@@ -32,11 +33,12 @@ RUN mv /usr/local/cwb-* /usr/local/cwb
 ###########################################
 # Actual Image without build dependencies #
 ###########################################
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 # Install dependency libraries
 RUN apt-get update && \
-    apt-get install -y \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends -y \
     bison \
     flex \
     libglib2.0-0 \

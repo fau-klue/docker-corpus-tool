@@ -1,9 +1,10 @@
-FROM ubuntu:xenial as builder
+FROM ubuntu:bionic as builder
 ARG version="3.4.15"
 
 # Install cwb dependencies
 RUN apt-get update && \
-    apt-get install -y \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends -y \
     apt-utils \
     autoconf \
     bison \
@@ -15,8 +16,8 @@ RUN apt-get update && \
     libncurses5 \
     libncurses5-dev \
     libpcre3-dev \
-    libreadline6 \
-    libreadline6-dev \
+    libreadline7 \
+    libreadline-dev \
     make \
     pkg-config \
     subversion \
@@ -43,11 +44,12 @@ RUN tar cvf /binaries.tar /binaries/
 ###########################################
 # Actual Image without build dependencies #
 ###########################################
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 ARG version="3.4.15"
 
 # Install dependency libraries
 RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends -y \
     a2ps \
     bison \

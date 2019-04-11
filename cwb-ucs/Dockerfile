@@ -1,5 +1,5 @@
 FROM ubuntu:xenial as builder
-ARG version="3.4.14"
+ARG version="3.4.15"
 
 # Install cwb dependencies
 RUN apt-get update && \
@@ -29,7 +29,7 @@ RUN svn co svn://svn.code.sf.net/p/cwb/code/perl/trunk cwb-perl
 
 # Run install script and Move to unified location
 WORKDIR /cwb
-RUN ./install-scripts/cwb-install-ubuntu
+RUN ./install-scripts/install-linux
 ENV PATH="/usr/local/ucs/System/bin/:/usr/local/cwb-${version}/bin/:${PATH}"
 
 # Building the cwb-perl bridges and packing them
@@ -44,7 +44,7 @@ RUN tar cvf /binaries.tar /binaries/
 # Actual Image without build dependencies #
 ###########################################
 FROM ubuntu:xenial
-ARG version="3.4.14"
+ARG version="3.4.15"
 
 # Install dependency libraries
 RUN apt-get update && \

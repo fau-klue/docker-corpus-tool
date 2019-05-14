@@ -1,5 +1,5 @@
 FROM ubuntu:bionic as builder
-ARG version="3.4.15"
+ARG version="3.4.16"
 
 # Install cwb dependencies
 RUN apt-get update && \
@@ -45,7 +45,7 @@ RUN tar cvf /binaries.tar /binaries/
 # Actual Image without build dependencies #
 ###########################################
 FROM ubuntu:bionic
-ARG version="3.4.15"
+ARG version="3.4.16"
 
 # Install dependency libraries
 RUN apt-get update && \

@@ -42,6 +42,8 @@ RUN apt-get update && \
     bison \
     flex \
     libglib2.0-0 \
+    libpng-dev \
+    libzip-dev \
     readline-common \
     r-base \
     && rm -rf /var/lib/apt/lists/*
@@ -59,7 +61,7 @@ COPY --from=builder /usr/local/cwb /usr/local/cwb
 ENV PATH="/usr/local/cwb/bin/:${PATH}"
 
 # Download, unzip and chmod CQPWeb from official repository
-ADD "https://sourceforge.net/projects/cwb/files/CQPweb/CQPweb-3.2/CQPweb-3.2.30.tar.gz/download?use_mirror=autoselect" /tmp
+ADD "https://downloads.sourceforge.net/project/cwb/CQPweb/CQPweb-3.2/CQPweb-3.2.30.tar.gz?r=&amp;ts=1558358297&amp;use_mirror=liquidtelecom" /tmp
 
 RUN set -ex; \
         \
@@ -68,9 +70,11 @@ RUN set -ex; \
         chown -R www-data:www-data /var/www/html
 
 # Copy CQPWeb configuration
-COPY config.inc.php /var/www/html/lib/config.inc.php
+COPY config.inc.php /var/www/html/lib/
+COPY entrypoint.sh /entrypoint.sh
 
 # To mount data storage
 VOLUME /data
 
-CMD ["bash"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["apache2-foreground"]

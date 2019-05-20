@@ -1,0 +1,23 @@
+version: "3.0"
+services:
+  cqpweb:
+    build:
+      dockerfile: Dockerfile
+    # volumes:
+    #   - /tmp/upload/:/var/www/html/upload/
+    links:
+      - cqp-db
+    depends_on:
+      - cqp-db
+    ports:
+      - "8080:80"
+    environment:
+      - "DB_HOST=cqp-db"
+      - "DB_PASSWORD=secret"
+  cqp-db:
+    image: mysql:5.7
+    environment:
+      - "MYSQL_USER=cqpweb"
+      - "MYSQL_DATABASE=cqpweb"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"

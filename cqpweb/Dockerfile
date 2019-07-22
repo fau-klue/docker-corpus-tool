@@ -35,6 +35,12 @@ RUN mv /usr/local/cwb-* /usr/local/cwb
 ###########################################
 FROM php:apache-stretch
 
+ENV DB_HOST=127.0.0.1 \
+    DB_PORT=3306 \
+    DB_DATABASE=cqpweb \
+    DB_USERNAME=secret \
+    DB_PASSWORD=secret
+
 # Install dependency libraries
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
@@ -46,6 +52,7 @@ RUN apt-get update && \
     libzip-dev \
     readline-common \
     r-base \
+    mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP Plugins

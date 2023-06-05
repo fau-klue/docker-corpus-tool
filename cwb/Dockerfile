@@ -1,6 +1,8 @@
-FROM ubuntu:bionic as builder
+FROM ubuntu:20.04
 
-# Install cwb dependencies
+##########################
+# INSTALL OS DEPENDENCIES
+##########################
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends -y \
@@ -15,41 +17,25 @@ RUN apt-get update && \
     libncurses5 \
     libncurses5-dev \
     libpcre3-dev \
-    libreadline7 \
+    libreadline8 \
     libreadline-dev \
     make \
     pkg-config \
     subversion \
-    && rm -rf /var/lib/apt/lists/*
+    git \
+    python3 \
+    python3-dev \
+    python3-pip \
+    python3-setuptools \
+    cython3 \
+    less \
+    mg
 
-# Download latest cwb source
+
+#####################
+# INSTALL LATEST CWB
+#####################
 RUN svn co http://svn.code.sf.net/p/cwb/code/cwb/trunk /cwb
-
-# Run install script and Move to unified location
 WORKDIR /cwb
-RUN ./install-scripts/install-linux
-RUN mv /usr/local/cwb-* /usr/local/cwb
-
-###########################################
-# Actual Image without build dependencies #
-###########################################
-FROM ubuntu:bionic
-
-# Install dependency libraries
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get install --no-install-recommends -y \
-    bison \
-    flex \
-    libglib2.0-0 \
-    readline-common \
-    && rm -rf /var/lib/apt/lists/*
-
-# Add new binaries to PATH
-COPY --from=builder /usr/local/cwb /usr/local/cwb
-ENV PATH="/usr/local/cwb/bin/:${PATH}"
-
-# To mount data storage
-VOLUME /data
-
-CMD ["bash"]
+RUN sed -i 's/SITE=beta-install/SITE=standard/' config.mk &&\
+    ./install-scripts/install-linux
